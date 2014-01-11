@@ -615,6 +615,16 @@ Note: You can safely omit specifying the peer and server when
         """Return True if this context's peer is verified."""
         return bool(self.getCurrentTrust())
 
+    def format_policy(self, policy, prefix=''):
+        """Return current policy for this context formatted as a string for
+        the user."""
+
+        return '{prefix}{policy} ({desc}) : {value}\n'.format(
+            policy = policy,
+            desc   = POLICIES[policy],
+            value  = 'on' if self.getPolicy(policy) else 'off',
+            prefix = prefix)
+
     def format_policies(self):
         """Return current policies for this context formatted as a string for
         the user."""
@@ -623,11 +633,8 @@ Note: You can safely omit specifying the peer and server when
         buf.write('Current OTR policies for {peer}:\n'.format(
             peer = self.peer))
 
-        for policy, desc in sorted(POLICIES.iteritems()):
-            buf.write('  {policy} ({desc}) : {value}\n'.format(
-                    policy = policy,
-                    desc   = desc,
-                    value  = 'on' if self.getPolicy(policy) else 'off'))
+        for policy in sorted(POLICIES):
+            buf.write(self.format_policy(policy, '  '))
 
         buf.write('Change policies with: /otr policy NAME on|off')
 
@@ -1254,13 +1261,14 @@ def command_cb(data, buf, args):
                 context = ACCOUNTS[current_user(server)].getContext(
                     irc_user(nick, server))
 
-                policy_var = context.policy_config_option(arg_parts[1].lower())
+                policy     = arg_parts[1].lower()
+                policy_var = context.policy_config_option(policy)
 
                 command('', '/set {policy} {value}'.format(
                     policy = policy_var,
                     value  = arg_parts[2]))
 
-                context.print_buffer(context.format_policies())
+                context.print_buffer(context.format_policy(policy))
 
                 result = weechat.WEECHAT_RC_OK
 
