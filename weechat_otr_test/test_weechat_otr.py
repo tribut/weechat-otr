@@ -15,8 +15,8 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
 
     def test_message_out_cb(self):
         result = weechat_otr.message_out_cb(None, None, 'server',
-            ':nick!user@host PRIVMSG friend :hello')
-        self.assertEqual(result, 'PRIVMSG friend :hello')
+            ':nick!user@host PRIVMSG friend :Grüße')
+        self.assertEqual(result, 'PRIVMSG friend :Grüße')
 
     def test_message_out_cb_send_tag_non_ascii(self):
         sys.modules['weechat'].config_options[
@@ -30,21 +30,21 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
 
     def test_parse_irc_privmsg_channel_ampersand(self):
         result = weechat_otr.parse_irc_privmsg(
-            ':nick!user@host PRIVMSG &channel :test')
+            ':nick!user@host PRIVMSG &channel :Grüße')
         self.assertEqual(result['to_channel'], '&channel')
 
     def test_build_privmsg_in_without_newline(self):
-        result = weechat_otr.build_privmsg_in('f', 't', 'line1')
-        self.assertEqual(result, ':f PRIVMSG t :line1')
+        result = weechat_otr.build_privmsg_in('f', 't', 'Mötley Crüe')
+        self.assertEqual(result, ':f PRIVMSG t :Mötley Crüe')
 
     def test_build_privmsg_in_with_newline(self):
-        result = weechat_otr.build_privmsg_in('f', 't', 'line1\nline2')
-        self.assertEqual(result, ':f PRIVMSG t :line1line2')
+        result = weechat_otr.build_privmsg_in('f', 't', ' Mötley Crüe\nSpın̈al Tap')
+        self.assertEqual(result, ':f PRIVMSG t : Mötley CrüeSpın̈al Tap')
 
     def test_build_privmsgs_in_without_newline(self):
         fromm = 'f'
         to = 't'
-        line = 'line1'
+        line = 'Blue Öyster Cult'
         result = weechat_otr.build_privmsgs_in(fromm, to, line)
         self.assertEqual(result,
                 weechat_otr.build_privmsg_in(fromm, to, line))
@@ -52,8 +52,8 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
     def test_build_privmsgs_in_without_newline_prefix(self):
         fromm = 'f'
         to = 't'
-        line = 'line1'
-        prefix = 'Some prefix: '
+        line = 'Blue Öyster Cult'
+        prefix = 'Präfix: '
         result = weechat_otr.build_privmsgs_in(fromm, to, line, prefix)
         self.assertEqual(result,
                 weechat_otr.build_privmsg_in(fromm, to, prefix+line))
@@ -61,43 +61,43 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
     def test_build_privmsgs_in_with_newline(self):
         fromm = 'f'
         to = 't'
-        result = weechat_otr.build_privmsgs_in(fromm, to, 'line1\nline2')
+        result = weechat_otr.build_privmsgs_in(fromm, to, 'Mötley Crüe\nSpın̈al Tap')
         self.assertEqual(result, '{msg1}\r\n{msg2}'.format(
-            msg1=weechat_otr.build_privmsg_in(fromm, to, 'line1'),
-            msg2=weechat_otr.build_privmsg_in(fromm, to, 'line2')))
+            msg1=weechat_otr.build_privmsg_in(fromm, to, 'Mötley Crüe'),
+            msg2=weechat_otr.build_privmsg_in(fromm, to, 'Spın̈al Tap')))
 
     def test_build_privmsgs_in_with_newline_prefix(self):
         fromm = 'f'
         to = 't'
-        prefix = 'Some prefix: '
-        result = weechat_otr.build_privmsgs_in(fromm, to, 'line1\nline2',
+        prefix = 'Präfix: '
+        result = weechat_otr.build_privmsgs_in(fromm, to, 'Mötley Crüe\nSpın̈al Tap',
                 prefix)
         self.assertEqual(result, '{msg1}\r\n{msg2}'.format(
             msg1=weechat_otr.build_privmsg_in(fromm, to,
-                '{}line1'.format(prefix)),
+                '{}Mötley Crüe'.format(prefix)),
             msg2=weechat_otr.build_privmsg_in(fromm, to,
-                '{}line2'.format(prefix))))
+                '{}Spın̈al Tap'.format(prefix))))
 
     def test_build_privmsg_out_without_newline(self):
-        result = weechat_otr.build_privmsg_out('t', 'line1')
-        self.assertEqual(result, 'PRIVMSG t :line1')
+        result = weechat_otr.build_privmsg_out('t', 'Mötley Crüe')
+        self.assertEqual(result, 'PRIVMSG t :Mötley Crüe')
 
     def test_build_privmsg_out_with_newline(self):
-        result = weechat_otr.build_privmsg_out('t', 'line1\nline2')
-        self.assertEqual(result, 'PRIVMSG t :line1\r\nPRIVMSG t :line2')
+        result = weechat_otr.build_privmsg_out('t', 'Mötley Crüe\nSpın̈al Tap')
+        self.assertEqual(result, 'PRIVMSG t :Mötley Crüe\r\nPRIVMSG t :Spın̈al Tap')
 
     def test_msg_irc_from_plain_action(self):
-        result = weechat_otr.msg_irc_from_plain('/me does something')
+        result = weechat_otr.msg_irc_from_plain('/me führt etwas aus')
         self.assertEqual(result,
-                '\x01ACTION does something\x01')
+                '\x01ACTION führt etwas aus\x01')
 
     def test_msg_irc_from_plain_no_action(self):
-        msg_no_action = 'just a message'
+        msg_no_action = 'Nur eine Übertragung'
         self.assertEqual(weechat_otr.msg_irc_from_plain(msg_no_action),
                 msg_no_action)
 
     def test_msg_irc_from_plain_action_invariant(self):
-        msg_action = '\x01ACTION does something\x01'
+        msg_action = '\x01ACTION führt etwas aus\x01'
         self.assertEqual(msg_action,
                 weechat_otr.msg_irc_from_plain(
                     weechat_otr.msg_plain_from_irc(msg_action)
@@ -105,17 +105,17 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
                 )
 
     def test_msg_plain_from_irc_action(self):
-        result = weechat_otr.msg_plain_from_irc('\x01ACTION does something\x01')
+        result = weechat_otr.msg_plain_from_irc('\x01ACTION führt etwas aus\x01')
         self.assertEqual(result,
-                '/me does something')
+                '/me führt etwas aus')
 
     def test_msg_plain_from_irc_no_action(self):
-        msg_no_action = 'just a message'
+        msg_no_action = 'Nur eine Übertragung'
         self.assertEqual(weechat_otr.msg_plain_from_irc(msg_no_action),
                 msg_no_action)
 
     def test_msg_plain_from_irc_action_invariant(self):
-        msg_action = '/me does something'
+        msg_action = '/me führt etwas aus'
         self.assertEqual(msg_action,
                 weechat_otr.msg_plain_from_irc(
                     weechat_otr.msg_irc_from_plain(msg_action)

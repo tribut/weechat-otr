@@ -15,26 +15,26 @@ class AssemblerTestCase(WeechatOtrTestCase):
         self.assembler = weechat_otr.Assembler()
 
     def test_is_query_start(self):
-        self.assembler.add('?OTRv2? encryption?')
+        self.assembler.add('?OTRv2? verschlüsselung/encryption?')
 
         self.assertTrue(self.assembler.is_query())
 
     def test_is_query_middle(self):
-        self.assembler.add('ATT: ?OTRv2?someone requested encryption!')
+        self.assembler.add('ATT: ?OTRv2?someone requested verschlüsselung/encryption!')
 
         self.assertTrue(self.assembler.is_query())
 
     def test_is_query_end(self):
-        self.assembler.add('encryption? ?OTRv2?')
+        self.assembler.add('verschlüsselung/encryption? ?OTRv2?')
 
         self.assertTrue(self.assembler.is_query())
 
     def test_add_get(self):
-        self.assembler.add('part 1')
-        self.assembler.add('part 2')
-        self.assertEqual(self.assembler.get(), 'part 1part 2')
+        self.assembler.add('stück 1')
+        self.assembler.add('stück 2')
+        self.assertEqual(self.assembler.get(), 'stück 1stück 2')
         self.assertEqual(self.assembler.get(), '')
 
     def test_is_done_non_otr(self):
-        self.assembler.add('part 1')
+        self.assembler.add('stück 1')
         self.assertTrue(self.assembler.is_done())

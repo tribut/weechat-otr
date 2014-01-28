@@ -16,8 +16,8 @@ class IrcHTMLParserTestCase(WeechatOtrTestCase):
 
     def test_tag_a(self):
         self.check_parse_result(
-            'this is a <a href="http://weechat.org">link</a>',
-            'this is a [link](http://weechat.org)'
+            'this is a <a href="http://weechat.org">verknüpfung</a>',
+            'this is a [verknüpfung](http://weechat.org)'
             )
 
     def test_tag_a_same(self):
@@ -28,22 +28,22 @@ class IrcHTMLParserTestCase(WeechatOtrTestCase):
 
     def test_tag_br(self):
         self.check_parse_result(
-            'foo<br>bar<br/>baz',
-            'foo\nbar\nbaz'
+            'foo<br>bär<br/>baz',
+            'foo\nbär\nbaz'
             )
 
     def test_tag_unknown(self):
         self.check_parse_result(
             '<font style="awesome"><blink>none of ' \
             '<marquee behavior="alternate">this</marquee></blink> ' \
-            'matters</font>',
-            'none of this matters'
+            'mätters</font>',
+            'none of this mätters'
             )
 
     def test_entity_named(self):
         self.check_parse_result(
-            'tom &amp; jerry',
-            'tom & jerry'
+            'tom &amp; jerry &amp; käthe',
+            'tom & jerry & käthe'
             )
 
     def test_entity_numeric(self):

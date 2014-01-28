@@ -26,7 +26,7 @@ class OtrInitInjectTestCase(WeechatOtrTestCase):
         context2 = account1.getContext('nick2@server')
 
         weechat_otr.message_in_cb(None, None, 'server',
-            ':nick2!user@host PRIVMSG nick :?OTRv2?')
+            ':nick2!user@host PRIVMSG nick :?OTRv2? Bitte um Verschlüsselung')
 
         sys.modules['weechat'].set_server_current_nick('server', 'nick2')
         self.send_all('nick', 'nick2', context2.injected)
@@ -44,14 +44,14 @@ class OtrInitInjectTestCase(WeechatOtrTestCase):
         self.assertTrue(context2.is_encrypted())
 
         weechat_otr.message_out_cb(None, None, 'server',
-            ':nick!user@host PRIVMSG nick2 :hi')
+            ':nick!user@host PRIVMSG nick2 :Grüße')
 
         sys.modules['weechat'].set_server_current_nick('server', 'nick2')
 
         result = weechat_otr.message_in_cb(None, None, 'server',
             ':nick!user@host PRIVMSG nick2 :%s' % context2.injected.pop())
 
-        self.assertEqual(result, ':nick!user@host PRIVMSG nick2 :hi')
+        self.assertEqual(result, ':nick!user@host PRIVMSG nick2 :Grüße')
 
     def send_all(self, from_nick, to_nick, messages):
         # pylint: disable=no-self-use

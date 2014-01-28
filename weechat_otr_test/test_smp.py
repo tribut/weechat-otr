@@ -18,7 +18,7 @@ class SmpTestCase(WeechatOtrTestCase):
         context = self.setup_smp_context('nick@server', 'nick2@server')
 
         weechat_otr.command_cb(
-            None, None, 'smp ask nick2 server question secret')
+            None, None, 'smp ask nick2 server question rätsel')
 
         self.assertEqual(('secret', 'question'), context.smp_init)
 
@@ -43,35 +43,35 @@ class SmpTestCase(WeechatOtrTestCase):
         context = self.setup_smp_context('nick@server', 'nick2@server')
 
         weechat_otr.command_cb(
-            None, 'server_nick2_buffer', 'smp ask question secret')
+            None, 'server_nick2_buffer', 'smp ask question rätsel')
 
-        self.assertEqual(('secret', 'question'), context.smp_init)
+        self.assertEqual(('secret', 'rätsel'), context.smp_init)
 
     def test_smp_ask_secret(self):
         context = self.setup_smp_context('nick@server', 'nick2@server')
 
-        weechat_otr.command_cb(None, 'server_nick2_buffer', 'smp ask secret')
+        weechat_otr.command_cb(None, 'server_nick2_buffer', 'smp ask rätsel')
 
-        self.assertEqual(('secret', None), context.smp_init)
+        self.assertEqual(('rätsel', None), context.smp_init)
 
     def test_smp_ask_nick_server_question_secret_multiple_words(self):
         context = self.setup_smp_context('nick@server', 'nick2@server')
 
         weechat_otr.command_cb(
             None, None, "smp ask nick2 server 'what is the secret?' "
-            "'eastmost penninsula is the secret'")
+            "'Grüne Tomaten is the secret'")
 
         self.assertEqual(
-            ('eastmost penninsula is the secret', 'what is the secret?'),
+            ('Grüne Tomaten is the secret', 'what is the secret?'),
             context.smp_init)
 
     def test_smp_respond_secret(self):
         context = self.setup_smp_context('nick@server', 'nick2@server')
 
         weechat_otr.command_cb(
-            None, 'server_nick2_buffer', 'smp respond secret')
+            None, 'server_nick2_buffer', 'smp respond rätsel')
 
-        self.assertEqual(('secret', ), context.smp_got_secret)
+        self.assertEqual(('rätsel', ), context.smp_got_secret)
 
     def test_smp_respond_secret_non_ascii(self):
         context = self.setup_smp_context('nick@server', 'nick2@server')
