@@ -295,7 +295,8 @@ def irc_user(nick, server):
             server=server)
 
 def parse_irc_privmsg(message):
-    """Parse an IRC PRIVMSG command and return a dictionary.
+    """Parse an IRC PRIVMSG command and return a dictionary or None, if
+    the message can't be parsed.
 
     Either the to_channel key or the to_nick key will be set depending on
     whether the message is to a nick or a channel. The other will be None.
