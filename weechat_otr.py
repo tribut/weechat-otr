@@ -172,10 +172,14 @@ IRC_PRIVMSG_RE = re.compile(r"""
     :
     (?P<from>
         (?P<from_nick>.+?)
-        !
-        (?P<from_user>.+?)
-        @
-        (?P<from_host>.+?)
+        (
+            (
+                !
+                (?P<from_user>.+?)
+            )?
+            @
+            (?P<from_host>.+?)
+        )?
     )
 \ )?
 PRIVMSG
