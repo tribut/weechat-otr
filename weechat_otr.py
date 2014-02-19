@@ -284,6 +284,15 @@ def debug_buffer_close_cb(data, buf):
     otr_debug_buffer = None
     return weechat.WEECHAT_RC_OK
 
+def internal_error(message):
+    """Prints an explanatory error message to the weechat core-buffer."""
+    prnt('', 'An internal error has occured in weechat-otr.\n'
+            'We\'re very sorry about this, this is probably a bug.\n'
+            'Please help to fix this by reporting the '
+            'following error message to our bugtracker at '
+            'https://github.com/mmb/weechat-otr/issues\n'
+            'ERROR: {}'.format(message))
+
 def current_user(server_name):
     """Get the nick and server of the current user on a server."""
     return irc_user(info_get('irc_nick', server_name), server_name)
@@ -985,6 +994,11 @@ def message_in_cb(data, modifier, modifier_data, string):
     parsed = parse_irc_privmsg(PYVER.to_unicode(string))
     debug(('parsed message', parsed))
 
+    if parsed is None:
+        internal_error('Could not parse incoming message: '
+                '{}'.format(string))
+        return ''
+
     # skip processing messages to public channels
     if parsed['to_channel']:
         return string
@@ -1044,6 +1058,11 @@ def message_out_cb(data, modifier, modifier_data, string):
 
         parsed = parse_irc_privmsg(PYVER.to_unicode(string))
         debug(('parsed message', parsed))
+
+        if parsed is None:
+            internal_error('Could not parse outgoing message: '
+                    '{}'.format(string))
+            return ''
 
         # skip processing messages to public channels
         if parsed['to_channel']:
