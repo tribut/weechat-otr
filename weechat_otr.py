@@ -1050,10 +1050,13 @@ def message_in_cb(data, modifier, modifier_data, string):
         except potr.context.NotOTRMessage:
             result = string
         except potr.context.UnencryptedMessage as err:
-            result = PYVER.to_str(build_privmsgs_in(
-                parsed['from'], parsed['to'], PYVER.to_unicode(
-                    msg_plain_from_irc(err.args[0])),
-                'Unencrypted message received: '))
+            result = ''
+            prnt(context.buffer(), '{prefix}\t{warn}Unencrypted message received from {nick}: {reset}{line}'.format(
+                prefix=get_prefix(),
+                warn=config_color('buffer.warning'),
+                nick=parsed['from_nick'],
+                reset=weechat.color('chat'),
+                line=msg_plain_from_irc(PYVER.to_unicode(err.args[0]))))
 
     weechat.bar_item_update(SCRIPT_NAME)
 
