@@ -1,6 +1,7 @@
 language: python
 sudo: false
 python:
+  - "2.6"
   - "2.7"
   - "3.3"
   - "3.4"
@@ -8,6 +9,7 @@ python:
 install:
   - "pip install pylint"
   - "pip install -r requirements.txt"
+  - "if [ $TRAVIS_PYTHON_VERSION == '2.6' ]; then pip install unittest2; fi"
 script: ./run_tests.sh
 matrix:
   fast_finish: true

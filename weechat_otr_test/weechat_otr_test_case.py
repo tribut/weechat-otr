@@ -16,6 +16,10 @@ sys.modules['weechat'] = weechat_otr_test.mock_weechat.MockWeechat(
 # pylint: disable=wrong-import-position
 import weechat_otr
 
+# Python 2.6 compatibility
+if not hasattr(unittest.TestCase, 'assertIs'):
+    import unittest2 as unittest
+
 class WeechatOtrTestCase(unittest.TestCase):
 
     def setUp(self):
