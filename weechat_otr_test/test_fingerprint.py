@@ -21,7 +21,7 @@ class FingerprintTestCase(WeechatOtrTestCase):
         account2 = weechat_otr.ACCOUNTS['nick2@server2']
         account2.getPrivkey()
 
-        weechat_otr.command_cb(None, None, 'fingerprint')
+        self.call_command_cb(None, None, 'fingerprint')
 
         self.assertPrinted('', (
             'eval(${{color:default}}:! ${{color:brown}}otr${{color:default}}'
@@ -49,7 +49,7 @@ class FingerprintTestCase(WeechatOtrTestCase):
         account1 = weechat_otr.ACCOUNTS['nick@server']
         account1.getPrivkey()
 
-        weechat_otr.command_cb(None, None, 'fingerprint match')
+        self.call_command_cb(None, None, 'fingerprint match')
 
         self.assertNoPrintedContains('', 'notamachxxx@server')
 
@@ -95,7 +95,7 @@ class FingerprintTestCase(WeechatOtrTestCase):
         account2 = weechat_otr.ACCOUNTS['nick2@server2']
         account2.getPrivkey()
 
-        weechat_otr.command_cb(None, None, 'fingerprint all')
+        self.call_command_cb(None, None, 'fingerprint all')
 
         self.assertPrinted('', (
             'eval(${color:default}:! ${color:brown}otr${color:default}'

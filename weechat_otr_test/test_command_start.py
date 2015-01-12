@@ -14,14 +14,14 @@ import weechat_otr
 class CommandStartTestCase(WeechatOtrTestCase):
 
     def test_start_buffer(self):
-        weechat_otr.command_cb(None, 'server_nick2_buffer', 'start')
+        self.call_command_cb(None, 'server_nick2_buffer', 'start')
 
         self.assertIn(
             (u'', '/quote -server server PRIVMSG nick2 :?OTR?'),
             sys.modules['weechat'].commands)
 
     def test_start_args(self):
-        weechat_otr.command_cb(None, None, 'start nick2 server')
+        self.call_command_cb(None, None, 'start nick2 server')
 
         self.assertIn(
             (u'', '/quote -server server PRIVMSG nick2 :?OTR?'),
@@ -30,14 +30,14 @@ class CommandStartTestCase(WeechatOtrTestCase):
     # /otr refresh is an alias for /otr start
 
     def test_refresh_buffer(self):
-        weechat_otr.command_cb(None, 'server_nick2_buffer', 'refresh')
+        self.call_command_cb(None, 'server_nick2_buffer', 'refresh')
 
         self.assertIn(
             (u'', '/quote -server server PRIVMSG nick2 :?OTR?'),
             sys.modules['weechat'].commands)
 
     def test_refresh_args(self):
-        weechat_otr.command_cb(None, None, 'refresh nick2 server')
+        self.call_command_cb(None, None, 'refresh nick2 server')
 
         self.assertIn(
             (u'', '/quote -server server PRIVMSG nick2 :?OTR?'),

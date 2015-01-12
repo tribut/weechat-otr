@@ -70,3 +70,13 @@ class WeechatOtrTestCase(unittest.TestCase):
         weechat_otr.ACCOUNTS[account_name] = account
 
         return context
+
+    def call_command_cb(self, data, buf, args):
+        """Call the plugin's command_cb, but make sure that all arguments
+        are converted to an utf-8 encoded byte string first to mimic
+        weechat's behaviour better."""
+        return weechat_otr.command_cb(
+                None if data is None else weechat_otr.PYVER.to_str(data),
+                None if buf is None else weechat_otr.PYVER.to_str(buf),
+                weechat_otr.PYVER.to_str(args)
+                )

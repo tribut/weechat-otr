@@ -103,7 +103,7 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
                 weechat_otr.msg_irc_from_plain(msg_action)))
 
     def test_command_cb_start_send_tag_off(self):
-        weechat_otr.command_cb(None, None, 'start')
+        self.call_command_cb(None, None, 'start')
 
         self.assertPrinted('server_nick_buffer', (
             'eval(${color:default}:! ${color:brown}otr${color:default} !:)\t'
@@ -120,7 +120,7 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
     def test_command_cb_start_send_tag_off_no_hints(self):
         sys.modules['weechat'].config_options[
             'otr.general.hints'] = 'off'
-        weechat_otr.command_cb(None, None, 'start')
+        self.call_command_cb(None, None, 'start')
 
         self.assertNotPrinted('server_nick_buffer', (
             'eval(${color:default}:! ${color:brown}otr${color:default} !:)\t'
@@ -130,7 +130,7 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
 
     def test_command_cb_start_send_tag_off_with_hints(self):
         sys.modules['weechat'].config_options['otr.general.hints'] = 'on'
-        weechat_otr.command_cb(None, None, 'start')
+        self.call_command_cb(None, None, 'start')
 
         self.assertPrinted('server_nick_buffer', (
             'eval(${color:default}:! ${color:brown}otr${color:default} !:)\t'
@@ -141,7 +141,7 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
     def test_command_cb_start_send_tag_on(self):
         sys.modules['weechat'].config_options[
             'otr.policy.server.nick.nick.send_tag'] = 'on'
-        weechat_otr.command_cb(None, None, 'start')
+        self.call_command_cb(None, None, 'start')
 
         self.assertPrinted('server_nick_buffer', (
             'eval(${color:default}:! ${color:brown}otr${color:default} !:)\t'
@@ -155,7 +155,7 @@ class WeechatOtrGeneralTestCase(WeechatOtrTestCase):
         self.assertEqual(result, 'this is not an irc command')
 
     def test_print_buffer_not_private(self):
-        weechat_otr.command_cb(None, None, 'start no_window_nick server')
+        self.call_command_cb(None, None, 'start no_window_nick server')
         self.assertPrinted('non_private_buffer', (
             'eval(${color:default}:! ${color:brown}otr${color:default} !:)\t'
             '(color lightblue)'

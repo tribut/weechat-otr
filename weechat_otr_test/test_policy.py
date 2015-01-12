@@ -12,7 +12,7 @@ import weechat_otr
 class TestPolicy(WeechatOtrTestCase):
 
     def test_policy_default_server_nick_buffer(self):
-        weechat_otr.command_cb(None, None, 'policy default')
+        self.call_command_cb(None, None, 'policy default')
 
         self.assertPrinted('server_nick_buffer', (
             'eval(${color:default}:! ${color:brown}otr${color:default} !:)\t'
@@ -38,7 +38,7 @@ class TestPolicy(WeechatOtrTestCase):
             'Change default policies with: /otr policy default NAME on|off'))
 
     def test_policy_default_no_server_nick_buffer(self):
-        weechat_otr.command_cb(None, 'non_private_buffer', 'policy default')
+        self.call_command_cb(None, 'non_private_buffer', 'policy default')
 
         self.assertPrinted('', (
             'Current default OTR policies:\n'
